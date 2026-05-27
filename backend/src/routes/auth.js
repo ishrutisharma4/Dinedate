@@ -63,8 +63,8 @@ router.post('/send-otp', (req, res) => {
 
     res.json({
       message: 'OTP sent',
-      // Return code in DEV mode so testers can see it
-      ...(process.env.NODE_ENV !== 'production' && { dev_otp: code }),
+      // Always return OTP for demo — replace with Twilio/MSG91 for real SMS
+      dev_otp: code,
     })
   } catch (err) { res.status(500).json({ message: err.message }) }
 })

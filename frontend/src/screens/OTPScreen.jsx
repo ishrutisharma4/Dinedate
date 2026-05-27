@@ -7,7 +7,7 @@ import api from '../services/api'
 
 export default function OTPScreen() {
   const navigate = useNavigate()
-  const { login } = useAuth()
+  const { loginWithToken } = useAuth()
   const { showToast } = useApp()
   const [step, setStep] = useState('phone') // 'phone' | 'otp'
   const [phone, setPhone] = useState('')
@@ -71,8 +71,8 @@ export default function OTPScreen() {
     try {
       const res = await api.post('/api/auth/verify-otp', { phone: cleaned, code })
       const { token, user } = res.data
-      localStorage.setItem('dd_token', token)
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      // loginWithToken sets user in React state + localStorage + axios header
+      loginWithToken(token, user)
       haptic.match()
       navigate(user.onboarding_complete ? '/browse' : '/onboarding')
     } catch (err) {

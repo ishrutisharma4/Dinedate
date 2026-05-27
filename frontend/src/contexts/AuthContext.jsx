@@ -20,22 +20,24 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
-  const login = async (email, password) => {
-    const res = await api.post('/api/auth/login', { email, password })
-    const { token, user } = res.data
+  // Shared helper — used by email login, OTP login, and signup
+  const applyAuth = (token, user) => {
     localStorage.setItem('dd_token', token)
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     setUser(user)
     return user
   }
 
+  const login = async (email, password) => {
+    const res = await api.post('/api/auth/login', { email, password })
+    return applyAuth(res.data.token, res.data.user)
+  }
+
+  const loginWithToken = (token, user) => applyAuth(token, user)
+
   const signup = async (data) => {
     const res = await api.post('/api/auth/signup', data)
-    const { token, user } = res.data
-    localStorage.setItem('dd_token', token)
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    setUser(user)
-    return user
+    return applyAuth(res.data.token, res.data.user)
   }
 
   const logout = () => {
@@ -47,7 +49,7 @@ export function AuthProvider({ children }) {
   const updateUser = (updates) => setUser(prev => ({ ...prev, ...updates }))
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, login, loginWithToken, signup, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )
