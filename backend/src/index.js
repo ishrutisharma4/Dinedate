@@ -49,8 +49,9 @@ app.get('/api/health', (_, res) => res.json({ status: 'ok', time: new Date().toI
 // Socket.IO
 setupSocket(io)
 
-const PORT = process.env.PORT || 5000
-server.listen(PORT, () => {
-  console.log(`DineDate backend running on http://localhost:${PORT}`)
-  console.log(`Google Maps: ${process.env.GOOGLE_MAPS_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY_HERE' ? 'using mock data (add key to .env to enable)' : 'enabled'}`)
+const PORT = process.env.PORT || 5001
+// Listen on 0.0.0.0 so Railway/Render can reach it (not just localhost)
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`DineDate backend running on port ${PORT}`)
+  console.log(`Google Maps: ${process.env.GOOGLE_MAPS_API_KEY && process.env.GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY_HERE' ? 'enabled' : 'using mock Bangalore data'}`)
 })
