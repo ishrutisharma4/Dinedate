@@ -30,6 +30,8 @@ class JsonStore {
   }
 
   _write(data) {
+    // Ensure the data directory exists (needed on Railway / fresh deploys)
+    fs.mkdirSync(path.dirname(DB_PATH), { recursive: true })
     fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2))
     this.data = data
   }
