@@ -1,0 +1,32 @@
+export const colors = {
+  primary: '#E07B39',
+  primaryLight: '#F5A06A',
+  primaryDark: '#B85E22',
+  secondary: '#2D4A3E',
+  secondaryLight: '#3D6B5A',
+  background: '#FFF8F0',
+  surface: '#FFFFFF',
+  surfaceAlt: '#FFF0E6',
+  accent: '#F4C430',
+  accentLight: '#FFD966',
+  like: '#4CAF50',
+  pass: '#F44336',
+  text: '#1A1A1A',
+  textSecondary: '#666666',
+  textLight: '#999999',
+  textInverse: '#FFFFFF',
+  border: '#E8DDD3',
+  borderLight: '#F2EBE5',
+  shadow: 'rgba(0,0,0,0.10)',
+  overlay: 'rgba(0,0,0,0.45)',
+  cardBg: '#FFFFFF',
+  inputBg: '#F9F4EF',
+}
+
+export const gradients = {
+  primary: 'linear-gradient(135deg, #E07B39, #F4C430)',
+  dark: 'linear-gradient(135deg, #2D4A3E, #3D6B5A)',
+  card: 'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.75) 100%)',
+  like: 'linear-gradient(135deg, #4CAF50, #81C784)',
+  pass: 'linear-gradient(135deg, #F44336, #EF9A9A)',
+}
