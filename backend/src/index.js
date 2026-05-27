@@ -9,24 +9,23 @@ const setupSocket = require('./socket/chatHandler')
 const app = express()
 const server = http.createServer(app)
 
-// Accept local dev + any deployed frontend (set FRONTEND_URL in production)
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5173',
-  process.env.FRONTEND_URL,           // e.g. https://dinedate.vercel.app
-].filter(Boolean)
+// Allow localhost + Vercel/Netlify previews + any custom FRONTEND_URL
+const isTrustedOrigin = (origin) => {
+  if (!origin) return true // curl / server-to-server
+  if (origin.includes('localhost')) return true
+  if (origin.endsWith('.vercel.app')) return true
+  if (origin.endsWith('.netlify.app')) return true
+  if (process.env.FRONTEND_URL && origin.startsWith(process.env.FRONTEND_URL)) return true
+  return false
+}
 
 const corsOptions = {
-  origin: (origin, cb) => {
-    // allow curl / server-to-server (no origin) and any allowed origin
-    if (!origin || allowedOrigins.some(o => origin.startsWith(o))) return cb(null, true)
-    cb(new Error('Not allowed by CORS: ' + origin))
-  },
+  origin: (origin, cb) => isTrustedOrigin(origin) ? cb(null, true) : cb(new Error('CORS: ' + origin)),
   credentials: true,
 }
 
 const io = new Server(server, {
-  cors: { origin: allowedOrigins, methods: ['GET', 'POST'], credentials: true },
+  cors: { origin: (origin, cb) => cb(null, isTrustedOrigin(origin)), methods: ['GET', 'POST'], credentials: true },
 })
 
 app.use(cors(corsOptions))
