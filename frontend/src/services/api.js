@@ -1,8 +1,11 @@
 import axios from 'axios'
 
-// In dev: proxy via vite.config.js (empty baseURL)
-// In production: VITE_API_URL env variable points to the deployed backend
-const baseURL = import.meta.env.VITE_API_URL || ''
+const PROD_BACKEND = 'https://dinedate-production.up.railway.app'
+
+// Dev: empty (Vite proxy handles it) | Production: env var or hardcoded Railway URL
+const baseURL = import.meta.env.DEV
+  ? ''
+  : (import.meta.env.VITE_API_URL || PROD_BACKEND)
 
 const api = axios.create({
   baseURL,

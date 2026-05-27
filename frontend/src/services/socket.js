@@ -1,7 +1,11 @@
 import { io } from 'socket.io-client'
 
-// Dev: '/' (proxied by Vite) | Production: full backend URL
-const SOCKET_URL = import.meta.env.VITE_API_URL || '/'
+const PROD_BACKEND = 'https://dinedate-production.up.railway.app'
+
+// Dev: '/' (proxied by Vite) | Production: env var or hardcoded Railway URL
+const SOCKET_URL = import.meta.env.DEV
+  ? '/'
+  : (import.meta.env.VITE_API_URL || PROD_BACKEND)
 
 let socket = null
 
