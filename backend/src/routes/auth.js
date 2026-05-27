@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken')
 const { getDb } = require('../database/db')
 const auth = require('../middleware/auth')
 
-const makeToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '30d' })
+const JWT_SECRET = process.env.JWT_SECRET || 'dinedate_demo_secret_fallback_2024'
+const makeToken = (userId) => jwt.sign({ userId }, JWT_SECRET, { expiresIn: '30d' })
 const safeUser = (u) => { if (!u) return null; const { password_hash, ...rest } = u; return rest }
 
 // In-memory OTP store: phone -> { code, expiresAt, attempts }
